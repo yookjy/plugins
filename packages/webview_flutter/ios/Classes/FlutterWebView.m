@@ -153,6 +153,14 @@
     [self clearCache:result];
   } else if ([[call method] isEqualToString:@"getTitle"]) {
     [self onGetTitle:result];
+  } else if ([[call method] isEqualToString:@"scrollTo"]) {
+    [_uiDelegate onScrollTo:call result:result];
+  } else if ([[call method] isEqualToString:@"scrollBy"]) {
+    [_uiDelegate onScrollBy:call result:result];
+  } else if ([[call method] isEqualToString:@"getScrollX"]) {
+    [_uiDelegate getScrollX:call result:result];
+  } else if ([[call method] isEqualToString:@"getScrollY"]) {
+    [_uiDelegate getScrollY:call result:result];
   } else {
     result(FlutterMethodNotImplemented);
   }
@@ -278,6 +286,30 @@
   result(title);
 }
 
+- (void)onScrollTo:(FlutterMethodCall*)call result:(FlutterResult)result {
+  NSDictionary* arguments = [call arguments];
+  int x = [arguments[@"x"] intValue];
+  int y = [arguments[@"y"] intValue];
+  _webView.scrollView.contentOffset = CGPointMake(x, y);
+  result(nil);
+}
+- (void)onScrollBy:(FlutterMethodCall*)call result:(FlutterResult)result {
+  CGPoint contentOffset = _webView.scrollView.contentOffset;
+  NSDictionary* arguments = [call arguments];
+  int x = [arguments[@"x"] intValue] + contentOffset.x;
+  int y = [arguments[@"y"] intValue] + contentOffset.y;
+  _webView.scrollView.contentOffset = CGPointMake(x, y);
+  result(nil);
+}
+- (void)getScrollX:(FlutterMethodCall*)call result:(FlutterResult)result {
+  int offsetX = _webView.scrollView.contentOffset.x;
+  result([NSNumber numberWithInt:offsetX]);
+}
+- (void)getScrollY:(FlutterMethodCall*)call result:(FlutterResult)result {
+  int offsetY = _webView.scrollView.contentOffset.y;
+  result([NSNumber numberWithInt:offsetY]);
+}
+
 // Returns nil when successful, or an error message when one or more keys are unknown.
 - (NSString*)applySettings:(NSDictionary<NSString*, id>*)settings {
   NSMutableArray<NSString*>* unknownKeys = [[NSMutableArray alloc] init];
@@ -400,6 +432,17 @@
   } else {
     NSLog(@"Updating UserAgent is not supported for Flutter WebViews prior to iOS 9.");
   }
+}
+
+#pragma mark WKUIDelegate
+- (WKWebView*)webView:(WKWebView*)webView
+    createWebViewWithConfiguration:(WKWebViewConfiguration*)configuration
+               forNavigationAction:(WKNavigationAction*)navigationAction
+                    windowFeatures:(WKWindowFeatures*)windowFeatures {
+  if (!navigationAction.targetFrame.isMainFrame) {
+    [webView loadRequest:navigationAction.request];
+  }
+  return nil;
 }
 
 @end

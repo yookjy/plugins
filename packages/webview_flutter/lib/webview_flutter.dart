@@ -79,6 +79,9 @@ typedef void PageStartedCallback(String url);
 /// Signature for when a [WebView] has finished loading a page.
 typedef void PageFinishedCallback(String url);
 
+/// Signature for when a [WebView] has failed to load a resource.
+typedef void WebResourceErrorCallback(WebResourceError error);
+
 /// Signature for when a page fire an Alert dialog by JavaScript.
 typedef Future<Null> JSAlertCallback(String url, String message);
 
@@ -157,6 +160,7 @@ class WebView extends StatefulWidget {
     this.gestureRecognizers,
     this.onPageStarted,
     this.onPageFinished,
+    this.onWebResourceError,
     this.onJSAlert,
     this.onJSConfirm,
     this.onJSPrompt,
@@ -290,6 +294,12 @@ class WebView extends StatefulWidget {
   /// [WebViewController.evaluateJavascript] can assume this.
   final PageFinishedCallback onPageFinished;
 
+  /// Invoked when a web resource has failed to load.
+  ///
+  /// This can be called for any resource (iframe, image, etc.), not just for
+  /// the main page.
+  final WebResourceErrorCallback onWebResourceError;
+  
   /// Invoked when a page fire an Alert dialog by JavaScript.
   ///
   /// You have to implement your Alert dialog on your own way.
@@ -320,8 +330,7 @@ class WebView extends StatefulWidget {
   ///
   /// By default `debuggingEnabled` is false.
   final bool debuggingEnabled;
-
-  /// The value used for the HTTP User-Agent: request header.
+  
   /// A Boolean value indicating whether horizontal swipe gestures will trigger back-forward list navigations.
   ///
   /// This only works on iOS.
@@ -329,6 +338,7 @@ class WebView extends StatefulWidget {
   /// By default `gestureNavigationEnabled` is false.
   final bool gestureNavigationEnabled;
 
+  /// The value used for the HTTP User-Agent: request header.
   ///
   /// When null the platform's webview default is used for the User-Agent header.
   ///
@@ -513,6 +523,13 @@ class _PlatformCallbacksHandler implements WebViewPlatformCallbacksHandler {
     }
   }
 
+  @override
+  void onWebResourceError(WebResourceError error) {
+    if (_widget.onWebResourceError != null) {
+      _widget.onWebResourceError(error);
+    }
+  }
+  
   @override
   Future<Null> onJSAlert(String url, String message) async {
     if (_widget.onJSAlert != null) {
@@ -713,6 +730,31 @@ class WebViewController {
   /// Returns the title of the currently loaded page.
   Future<String> getTitle() {
     return _webViewPlatformController.getTitle();
+  }
+
+  /// Sets the WebView's content scroll position.
+  ///
+  /// The parameters `x` and `y` specify the scroll position in WebView pixels.
+  Future<void> scrollTo(int x, int y) {
+    return _webViewPlatformController.scrollTo(x, y);
+  }
+  /// Move the scrolled position of this view.
+  ///
+  /// The parameters `x` and `y` specify the amount of WebView pixels to scroll by horizontally and vertically respectively.
+  Future<void> scrollBy(int x, int y) {
+    return _webViewPlatformController.scrollBy(x, y);
+  }
+  /// Return the horizontal scroll position, in WebView pixels, of this view.
+  ///
+  /// Scroll position is measured from left.
+  Future<int> getScrollX() {
+    return _webViewPlatformController.getScrollX();
+  }
+  /// Return the vertical scroll position, in WebView pixels, of this view.
+  ///
+  /// Scroll position is measured from top.
+  Future<int> getScrollY() {
+    return _webViewPlatformController.getScrollY();
   }
 }
 
