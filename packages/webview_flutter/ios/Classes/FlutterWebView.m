@@ -154,13 +154,13 @@
   } else if ([[call method] isEqualToString:@"getTitle"]) {
     [self onGetTitle:result];
   } else if ([[call method] isEqualToString:@"scrollTo"]) {
-    [_uiDelegate onScrollTo:call result:result];
+    [self onScrollTo:call result:result];
   } else if ([[call method] isEqualToString:@"scrollBy"]) {
-    [_uiDelegate onScrollBy:call result:result];
+    [self onScrollBy:call result:result];
   } else if ([[call method] isEqualToString:@"getScrollX"]) {
-    [_uiDelegate getScrollX:call result:result];
+    [self getScrollX:call result:result];
   } else if ([[call method] isEqualToString:@"getScrollY"]) {
-    [_uiDelegate getScrollY:call result:result];
+    [self getScrollY:call result:result];
   } else {
     result(FlutterMethodNotImplemented);
   }
