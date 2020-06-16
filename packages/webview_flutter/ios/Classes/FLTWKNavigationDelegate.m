@@ -68,13 +68,13 @@
                     decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler {
 
     if ([navigationResponse.response isKindOfClass:[NSHttpUrlResponse class]]) {
-        NSHttpUrlResponse* httpResponse = navigationResponse.response;
+        NSHttpUrlResponse* httpResponse = (NSHTTPURLResponse *) navigationResponse.response;
         if (httpResponse.statusCode >= 400 && httpResponse.statusCode <= 500) {
             [_methodChannel invokeMethod:@"onWebResourceError"
                                  arguments:@{
                                    @"errorCode" : @(httpResponse.statusCode),
                                    @"domain" : httpResponse.URL,
-                                   @"description" : httpResponse.localizedStringForStatusCode,
+                                   @"description" : [NSHTTPURLResponse localizedStringForStatusCode:httpResponse.statusCode],
                                    @"errorType" : @"unknown",
                                  }];
         }
