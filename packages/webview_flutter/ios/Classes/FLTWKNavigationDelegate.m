@@ -69,7 +69,7 @@
 
     if ([navigationResponse.response isKindOfClass:[NSHTTPURLResponse class]]) {
         NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse *) navigationResponse.response;
-        if (httpResponse.statusCode >= 400 && httpResponse.statusCode <= 500) {
+        if (httpResponse.statusCode >= 400 && httpResponse.statusCode < 600) {
             [_methodChannel invokeMethod:@"onWebResourceError"
                                  arguments:@{
                                    @"errorCode" : @(httpResponse.statusCode),
