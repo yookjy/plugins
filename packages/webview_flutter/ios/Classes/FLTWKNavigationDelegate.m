@@ -67,8 +67,8 @@
     decidePolicyForNavigationResponse:(WKNavigationResponse *)navigationResponse
                     decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler {
 
-    if ([navigationResponse.response isKindOfClass:[NSHttpUrlResponse class]]) {
-        NSHttpUrlResponse* httpResponse = (NSHTTPURLResponse *) navigationResponse.response;
+    if ([navigationResponse.response isKindOfClass:[NSHTTPURLResponse class]]) {
+        NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse *) navigationResponse.response;
         if (httpResponse.statusCode >= 400 && httpResponse.statusCode <= 500) {
             [_methodChannel invokeMethod:@"onWebResourceError"
                                  arguments:@{
