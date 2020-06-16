@@ -62,6 +62,26 @@
                         }];
 }
 
+//40x, 50x 에러 처리를 위해서 추가
+- (void)webView:(WKWebView *)webView
+    decidePolicyForNavigationResponse:(WKNavigationResponse *)navigationResponse
+                    decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler {
+
+    if ([navigationResponse.response isKindOfClass:[NSHttpUrlResponse class]]) {
+        NSHttpUrlResponse* httpResponse = navigationResponse.response;
+        if (httpResponse.statusCode >= 400 && httpResponse.statusCode <= 500) {
+            [_methodChannel invokeMethod:@"onWebResourceError"
+                                 arguments:@{
+                                   @"errorCode" : @(httpResponse.statusCode),
+                                   @"domain" : httpResponse.URL,
+                                   @"description" : httpResponse.localizedStringForStatusCode,
+                                   @"errorType" : @"unknown",
+                                 }];
+        }
+    }
+    decisionHandler(WKNavigationActionPolicyAllow);
+}
+
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
   [_methodChannel invokeMethod:@"onPageFinished" arguments:@{@"url" : webView.URL.absoluteString}];
 }
@@ -101,4 +121,5 @@
                        withError:(NSError *)error {
   [self onWebResourceError:error];
 }
+
 @end
