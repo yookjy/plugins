@@ -73,7 +73,7 @@
             [_methodChannel invokeMethod:@"onWebResourceError"
                                  arguments:@{
                                    @"errorCode" : @(httpResponse.statusCode),
-                                   @"domain" : httpResponse.URL,
+                                   @"domain" : [httpResponse.URL absoluteString],
                                    @"description" : [NSHTTPURLResponse localizedStringForStatusCode:httpResponse.statusCode],
                                    @"errorType" : @"unknown",
                                  }];
