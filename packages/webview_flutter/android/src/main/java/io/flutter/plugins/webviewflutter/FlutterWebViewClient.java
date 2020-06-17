@@ -205,6 +205,8 @@ class FlutterWebViewClient {
       public void onReceivedHttpError(
               WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
 
+        Log().i("FlutterWebViewClient", "[onReceivedHttpError1]" + statusCode);
+
         super.onReceivedHttpError(view, request, errorResponse);
 //          Uri url = request.getUrl();
 //          String lastSegment = url.getLastPathSegment();
@@ -288,6 +290,17 @@ class FlutterWebViewClient {
       @Override
       public void onReceivedHttpError(
               WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
+
+        inal int statusCode;
+        // SDK < 21 does not provide statusCode
+        if (Build.VERSION.SDK_INT < 21) {
+          statusCode = STATUS_CODE_UNKNOWN;
+        } else {
+          statusCode = errorResponse.getStatusCode();
+        }
+
+        Log().i("FlutterWebViewClient", "[onReceivedHttpError2]" + statusCode);
+
         super.onReceivedHttpError(view, request, errorResponse);
 
 //        Uri url = request.getUrl();
