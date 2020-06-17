@@ -220,10 +220,12 @@ class FlutterWebViewClient {
               lastSegment.contains(".js"))))
             return;
 
-        FlutterWebViewClient.this.onWebResourceError(
-                errorResponse.getStatusCode(),
-                errorResponse.getReasonPhrase(),
-                request.getUrl().toString());
+        final Map<String, Object> args = new HashMap<>();
+        args.put("errorCode", errorResponse.getStatusCode());
+        args.put("description", errorResponse.getReasonPhrase());
+        args.put("errorType", WebViewClient.ERROR_UNKNOWN);
+        args.put("failingUrl", request.getUrl().toString()));
+        FlutterWebViewClient.this.methodChannel.invokeMethod("onWebResourceError", args);
       }
     };
   }
