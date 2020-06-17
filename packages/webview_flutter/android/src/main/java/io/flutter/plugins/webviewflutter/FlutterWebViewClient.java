@@ -205,6 +205,14 @@ class FlutterWebViewClient {
       public void onReceivedHttpError(
               WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
 
+        int statusCode;
+        // SDK < 21 does not provide statusCode
+        if (Build.VERSION.SDK_INT < 21) {
+          statusCode = STATUS_CODE_UNKNOWN;
+        } else {
+          statusCode = errorResponse.getStatusCode();
+        }
+
         Log().i("FlutterWebViewClient", "[onReceivedHttpError1]" + statusCode);
 
         super.onReceivedHttpError(view, request, errorResponse);
@@ -291,7 +299,7 @@ class FlutterWebViewClient {
       public void onReceivedHttpError(
               WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
 
-        inal int statusCode;
+        int statusCode;
         // SDK < 21 does not provide statusCode
         if (Build.VERSION.SDK_INT < 21) {
           statusCode = STATUS_CODE_UNKNOWN;
