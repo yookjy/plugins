@@ -200,6 +200,7 @@ class FlutterWebViewClient {
         // truly lost.
       }
 
+      @TargetApi(Build.VERSION_CODES.M)
       @Override
       public void onReceivedHttpError(
               WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
@@ -283,10 +284,10 @@ class FlutterWebViewClient {
         // truly lost.
       }
 
+      @TargetApi(Build.VERSION_CODES.M)
       @Override
       public void onReceivedHttpError(
               WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
-
         super.onReceivedHttpError(view, request, errorResponse);
 
 //        Uri url = request.getUrl();
