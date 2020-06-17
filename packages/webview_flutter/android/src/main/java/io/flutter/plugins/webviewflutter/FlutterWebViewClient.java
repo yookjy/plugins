@@ -213,7 +213,7 @@ class FlutterWebViewClient {
           statusCode = errorResponse.getStatusCode();
         }
 
-        Log().i("FlutterWebViewClient", "[onReceivedHttpError1]" + statusCode);
+        Log.i("FlutterWebViewClient", "[onReceivedHttpError1]" + statusCode);
 
         super.onReceivedHttpError(view, request, errorResponse);
 //          Uri url = request.getUrl();
@@ -307,7 +307,7 @@ class FlutterWebViewClient {
           statusCode = errorResponse.getStatusCode();
         }
 
-        Log().i("FlutterWebViewClient", "[onReceivedHttpError2]" + statusCode);
+        Log.i("FlutterWebViewClient", "[onReceivedHttpError2]" + statusCode);
 
         super.onReceivedHttpError(view, request, errorResponse);
 
