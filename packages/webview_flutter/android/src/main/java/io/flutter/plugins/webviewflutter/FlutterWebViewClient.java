@@ -224,7 +224,7 @@ class FlutterWebViewClient {
         args.put("errorCode", errorResponse.getStatusCode());
         args.put("description", errorResponse.getReasonPhrase());
         args.put("errorType", WebViewClient.ERROR_UNKNOWN);
-        args.put("failingUrl", request.getUrl().toString()));
+        args.put("failingUrl", request.getUrl().toString());
         FlutterWebViewClient.this.methodChannel.invokeMethod("onWebResourceError", args);
       }
     };
