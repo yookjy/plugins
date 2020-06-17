@@ -203,6 +203,8 @@ class FlutterWebViewClient {
       @Override
       public void onReceivedHttpError(
               WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
+
+        super.onReceivedHttpError(view, request, errorResponse);
 //          Uri url = request.getUrl();
 //          String lastSegment = url.getLastPathSegment();
 //
@@ -284,6 +286,9 @@ class FlutterWebViewClient {
       @Override
       public void onReceivedHttpError(
               WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
+
+        super.onReceivedHttpError(view, request, errorResponse);
+
 //        Uri url = request.getUrl();
 //        String lastSegment = url.getLastPathSegment();
 //
