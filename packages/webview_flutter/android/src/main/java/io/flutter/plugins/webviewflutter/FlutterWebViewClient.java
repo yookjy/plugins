@@ -228,9 +228,9 @@ class FlutterWebViewClient {
 //        FlutterWebViewClient.this.methodChannel.invokeMethod("onWebResourceError", args);
         final Map<String, Object> args = new HashMap<>();
         args.put("errorCode", 1);
-        args.put("description", 'test');
+        args.put("description", "test");
         args.put("errorType", WebViewClient.ERROR_UNKNOWN);
-        args.put("failingUrl", 'http://test.com');
+        args.put("failingUrl", "http://test.com");
         FlutterWebViewClient.this.methodChannel.invokeMethod("onWebResourceError", args);
       }
     };
@@ -284,28 +284,35 @@ class FlutterWebViewClient {
       @Override
       public void onReceivedHttpError(
               WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
-        Uri url = request.getUrl();
-        String lastSegment = url.getLastPathSegment();
-
-        //리소스를 못찾는 경우는 무시
-        if (errorResponse.getStatusCode() < 400 ||
-                (errorResponse.getStatusCode() == 404 &&
-                        lastSegment != null &&
-                        (lastSegment.contains(".jpg") ||
-                                lastSegment.contains(".jpeg") ||
-                                lastSegment.contains(".png") ||
-                                lastSegment.contains(".js") ||
-                                lastSegment.contains(".css") ||
-                                lastSegment.contains(".font") ||
-                                lastSegment.contains(".ico") ||
-                                lastSegment.contains(".js"))))
-          return;
+//        Uri url = request.getUrl();
+//        String lastSegment = url.getLastPathSegment();
+//
+//        //리소스를 못찾는 경우는 무시
+//        if (errorResponse.getStatusCode() < 400 ||
+//                (errorResponse.getStatusCode() == 404 &&
+//                        lastSegment != null &&
+//                        (lastSegment.contains(".jpg") ||
+//                                lastSegment.contains(".jpeg") ||
+//                                lastSegment.contains(".png") ||
+//                                lastSegment.contains(".js") ||
+//                                lastSegment.contains(".css") ||
+//                                lastSegment.contains(".font") ||
+//                                lastSegment.contains(".ico") ||
+//                                lastSegment.contains(".js"))))
+//          return;
+//
+//        final Map<String, Object> args = new HashMap<>();
+//        args.put("errorCode", errorResponse.getStatusCode());
+//        args.put("description", errorResponse.getReasonPhrase());
+//        args.put("errorType", WebViewClient.ERROR_UNKNOWN);
+//        args.put("failingUrl", request.getUrl().toString());
+//        FlutterWebViewClient.this.methodChannel.invokeMethod("onWebResourceError", args);
 
         final Map<String, Object> args = new HashMap<>();
-        args.put("errorCode", errorResponse.getStatusCode());
-        args.put("description", errorResponse.getReasonPhrase());
+        args.put("errorCode", 2);
+        args.put("description", "test2");
         args.put("errorType", WebViewClient.ERROR_UNKNOWN);
-        args.put("failingUrl", request.getUrl().toString());
+        args.put("failingUrl", "http://test2.com");
         FlutterWebViewClient.this.methodChannel.invokeMethod("onWebResourceError", args);
       }
     };
