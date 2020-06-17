@@ -242,7 +242,7 @@ class FlutterWebViewClient {
         final Map<String, Object> args = new HashMap<>();
         args.put("errorCode", 1);
         args.put("description", "test");
-        args.put("errorType", WebViewClient.ERROR_UNKNOWN);
+        args.put("errorType", "unknown");
         args.put("failingUrl", "http://test.com");
         FlutterWebViewClient.this.methodChannel.invokeMethod("onWebResourceError", args);
       }
@@ -338,7 +338,7 @@ class FlutterWebViewClient {
         final Map<String, Object> args = new HashMap<>();
         args.put("errorCode", 2);
         args.put("description", "test2");
-        args.put("errorType", WebViewClient.ERROR_UNKNOWN);
+        args.put("errorType", "unknown");
         args.put("failingUrl", "http://test2.com");
         FlutterWebViewClient.this.methodChannel.invokeMethod("onWebResourceError", args);
       }
