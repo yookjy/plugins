@@ -208,7 +208,7 @@ class FlutterWebViewClient {
         int statusCode;
         // SDK < 21 does not provide statusCode
         if (Build.VERSION.SDK_INT < 21) {
-          statusCode = STATUS_CODE_UNKNOWN;
+          statusCode = 12501;
         } else {
           statusCode = errorResponse.getStatusCode();
         }
@@ -302,7 +302,7 @@ class FlutterWebViewClient {
         int statusCode;
         // SDK < 21 does not provide statusCode
         if (Build.VERSION.SDK_INT < 21) {
-          statusCode = STATUS_CODE_UNKNOWN;
+          statusCode = 12501;
         } else {
           statusCode = errorResponse.getStatusCode();
         }
