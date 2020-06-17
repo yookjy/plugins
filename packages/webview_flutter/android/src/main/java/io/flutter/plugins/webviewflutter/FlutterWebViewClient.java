@@ -9,6 +9,7 @@ import android.annotation.TargetApi;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.util.Log;
+import android.net.Uri;
 import android.view.KeyEvent;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
@@ -196,6 +197,32 @@ class FlutterWebViewClient {
         // Deliberately empty. Occasionally the webview will mark events as having failed to be
         // handled even though they were handled. We don't want to propagate those as they're not
         // truly lost.
+      }
+
+      @Override
+      public void onReceivedHttpError(
+              WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
+          Uri url = request.getUrl();
+          String lastSegment = url.getLastPathSegment();
+
+          //리소스를 못찾는 경우는 무시
+          if (errorResponse.getStatusCode() < 400 ||
+              (errorResponse.getStatusCode() == 404 &&
+              lastSegment != null &&
+              (lastSegment.contains(".jpg") ||
+              lastSegment.contains(".jpeg") ||
+              lastSegment.contains(".png") ||
+              lastSegment.contains(".js") ||
+              lastSegment.contains(".css") ||
+              lastSegment.contains(".font") ||
+              lastSegment.contains(".ico") ||
+              lastSegment.contains(".js"))))
+            return;
+
+        FlutterWebViewClient.this.onWebResourceError(
+                errorResponse.getStatusCode(),
+                errorResponse.getReasonPhrase(),
+                request.getUrl().toString());
       }
     };
   }
