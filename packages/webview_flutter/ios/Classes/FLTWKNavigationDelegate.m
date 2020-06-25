@@ -79,7 +79,7 @@
                                  }];
         }
     }
-    decisionHandler(WKNavigationActionPolicyAllow);
+    decisionHandler(WKNavigationResponsePolicyAllow);
 }
 
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
